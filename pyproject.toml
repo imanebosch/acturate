@@ -1,0 +1,61 @@
+[project]
+name = "acturate"
+version = "0.1.0"
+description = "Tools for pricing actuaries"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{name = "Ignasi Mañé Bosch"}]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.4.1",
+    "pytest-cov==6.2.1",
+    "pytest-mock==3.14.1",
+    "ruff==0.12.3"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=acturate",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov"
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests"
+]
+
+[tool.ruff]
+# Directories to lint (default: ".")
+src = ["acturate"]
+# Exclude tests and docs if you want
+exclude = ["docs"]
+
+# Set the line length (default: 88)
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]  # E: pycodestyle errors, F: pyflakes, W: warnings
+ignore = []
