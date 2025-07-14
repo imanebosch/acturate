@@ -1,6 +1,6 @@
 [project]
 name = "acturate"
-version = "0.1.0"
+version = "0.1.0.dev1"
 description = "Tools for pricing actuaries"
 readme = "README.md"
 requires-python = ">=3.8"
