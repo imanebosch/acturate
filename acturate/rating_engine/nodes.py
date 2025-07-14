@@ -30,7 +30,7 @@ class CategoricalNode(Node):
         self,
         value: Node,
         type: str,
-        categories: List[str],
+        categories: List[Optional[str]],
         beta: List[float],
     ):
         self.value = value
@@ -38,7 +38,7 @@ class CategoricalNode(Node):
         self.categories = categories
         self.beta = beta
 
-    def evaluate(self, data: dict = None):
+    def evaluate(self, data: Optional[Dict[str, Any]] = None):
         value = self.value.evaluate(data=data)
 
         if value is None:
@@ -49,14 +49,16 @@ class CategoricalNode(Node):
         return self.beta[self.categories.index(str(value))]
 
 
-class NumericalNode:
-    def __init__(self, value: Node, type: str, intervals: List[str], beta: List[float]):
+class NumericalNode(Node):
+    def __init__(
+        self, value: Node, type: str, intervals: List[Optional[str]], beta: List[float]
+    ):
         self.value = value
         self.type = type
         self.beta = beta
         self.intervals = intervals
 
-    def evaluate(self, data: dict = None):
+    def evaluate(self, data: Optional[Dict[str, Any]] = None):
         value = self.value.evaluate(data=data)
 
         if value is None:
@@ -65,25 +67,29 @@ class NumericalNode:
         for i, interval in enumerate(self.intervals):
             if interval in [DEFAULT_ENUM, None]:
                 continue
+
+            assert interval is not None  # type checker hint
             if is_in_interval(value, interval):
                 return self.beta[i]
 
         return self.beta[self.intervals.index(DEFAULT_ENUM)]
 
 
-class InputNode:
-    def __init__(self, value: Node, type: str):
+class InputNode(Node):
+    def __init__(self, value: str, type: str):
         self.value = value
         self.type = type
 
-    def evaluate(self, data: dict = None):
+    def evaluate(self, data: Optional[Dict[str, Any]] = None):
+        if data is None:
+            raise ValueError("Input data must not be None")
         try:
             return data[self.value]
         except KeyError:
             raise KeyError(f"Key '{self.value}' not found in input data")
 
 
-class OperationNode:
+class OperationNode(Node):
     def __init__(
         self, type: str, operator: Operator, first_value: Node, second_value: Node
     ):
@@ -92,7 +98,7 @@ class OperationNode:
         self.first_value = first_value
         self.second_value = second_value
 
-    def evaluate(self, data: dict = None):
+    def evaluate(self, data: Optional[Dict[str, Any]] = None):
         return self.operator.evaluate(
             self.first_value.evaluate(data=data), self.second_value.evaluate(data=data)
         )

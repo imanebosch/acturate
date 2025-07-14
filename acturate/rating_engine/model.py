@@ -40,7 +40,7 @@ class Rate:
         """
 
         if not isinstance(tree, dict):
-            return InputNode(value=tree, type="input")
+            return InputNode(value=str(tree), type="input")
 
         node_type = tree["type"]
 
