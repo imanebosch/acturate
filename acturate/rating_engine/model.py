@@ -114,20 +114,10 @@ class Model:
 
         return result
 
-    def load_model(self, path: str):
+    def _load_model_from_dict(self, data: Dict[str, Dict[str, dict]]):
         """
-        Loads the model from a JSON file.
-
-        Args:
-            path (str): The path to the JSON file.
+        Internal method to load the model from a dictionary.
         """
-
-        try:
-            with open(path, "r") as f:
-                data: Dict[str, Dict[str, dict]] = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            raise ValueError(f"Error loading model: {e}")
-
         # Clear existing coverages and attributes
         self.coverages.clear()
         for attr in list(self.__dict__.keys()):
@@ -139,6 +129,29 @@ class Model:
             cover = Coverage(name=coverage_name)
             for rate_name, rate_data in rates.items():
                 cover.add_rate(Rate(name=rate_name, tree=rate_data))
-
             self.coverages.append(cover)
             setattr(self, coverage_name, cover)
+
+    def load_model(self, path: str):
+        """
+        Loads the model from a JSON file.
+
+        Args:
+            path (str): The path to the JSON file.
+        """
+        try:
+            with open(path, "r") as f:
+                data: Dict[str, Dict[str, dict]] = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            raise ValueError(f"Error loading model: {e}")
+
+        self._load_model_from_dict(data)
+
+    def load_model_from_dict(self, data: Dict[str, Dict[str, dict]]):
+        """
+        Loads the model from a dictionary.
+
+        Args:
+            data (Dict[str, Dict[str, dict]]): The model data as a dictionary.
+        """
+        self._load_model_from_dict(data)
