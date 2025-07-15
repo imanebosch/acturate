@@ -17,7 +17,7 @@ def and_operator(first_value: Any, second_value: Any) -> Any:
     return first_value and second_value
 
 
-def grater_than_operator(first_value: Any, second_value: Any) -> bool:
+def greater_than_operator(first_value: Any, second_value: Any) -> bool:
     return first_value > second_value
 
 
@@ -61,9 +61,9 @@ OPERATORS: Dict[str, Operator] = {
     "and": Operator("and", and_operator),
     "concat": Operator("concat", concat_operator),
     "<": Operator("less_than", less_than_operator),
-    ">": Operator("grater_than", grater_than_operator),
+    ">": Operator("grater_than", greater_than_operator),
     ">=": Operator("grater_equal_than", greater_than_or_equal_operator),
     "<=": Operator("less_equal_than", less_than_or_equal_operator),
     "!=": Operator("not_equal", not_equal),
-    "==": Operator("not_equal", not_equal),
+    "==": Operator("equal", equal),
 }
