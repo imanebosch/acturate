@@ -20,6 +20,10 @@ dev = [
     "ipython"
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/imanebosch/acturate"
+"Repository" = "https://github.com/imanebosch/acturate"
+
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
