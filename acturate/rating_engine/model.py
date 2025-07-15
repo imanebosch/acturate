@@ -83,6 +83,7 @@ class Coverage:
 
     def add_rate(self, rate: Rate):
         self.rates.append(rate)
+        setattr(self, rate.name, rate)
 
     def price(self, data: dict):
         """
